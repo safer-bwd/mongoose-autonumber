@@ -7,8 +7,19 @@ const schema = new mongoose.Schema({
     lowercase: true,
     trim: true
   },
+  field: {
+    type: String,
+    required: true,
+    lowercase: true,
+    trim: true
+  },
   period: {
     type: Date,
+    required: false,
+    default: null
+  },
+  group: {
+    type: mongoose.Schema.Types.Mixed,
     required: false,
     default: null
   },
