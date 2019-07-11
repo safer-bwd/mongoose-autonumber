@@ -30,7 +30,12 @@ const schema = new mongoose.Schema({
   }
 }, { id: false });
 
-schema.index({ numerator: 1, period: 1 });
+schema.index({
+  numerator: 1,
+  field: 1,
+  period: 1,
+  group: 1
+});
 
 async function getNext(numerator, period) {
   const Counter = this;
