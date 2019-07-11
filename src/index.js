@@ -9,7 +9,7 @@ export default (schema, options = {}) => {
     numerator,
     period,
     group,
-    prefix,
+    prefix = '',
     dateField
   } = options;
 
@@ -40,10 +40,7 @@ export default (schema, options = {}) => {
     if (type === Number) {
       doc[field] = count;
     } else {
-      let docPrefix = '';
-      if (prefix) {
-        docPrefix = isFunction(prefix) ? prefix(doc) : prefix;
-      }
+      const docPrefix = isFunction(prefix) ? prefix(doc) : prefix;
       doc[field] = `${docPrefix}${count}`;
     }
 
