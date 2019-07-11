@@ -7,12 +7,6 @@ const schema = new mongoose.Schema({
     lowercase: true,
     trim: true
   },
-  field: {
-    type: String,
-    required: true,
-    lowercase: true,
-    trim: true
-  },
   period: {
     type: Date,
     required: false,
@@ -32,14 +26,13 @@ const schema = new mongoose.Schema({
 
 schema.index({
   numerator: 1,
-  field: 1,
   period: 1,
   group: 1
 });
 
-async function getNext(numerator, period) {
+async function getNext(numerator, period, group) {
   const Counter = this;
-  const filter = { numerator, period };
+  const filter = { numerator, period, group };
   const update = { $inc: { count: 1 } };
   const counter = await Counter.findOneAndUpdate(filter, update, {
     upsert: true,
