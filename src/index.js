@@ -67,7 +67,7 @@ const setNumber = async (doc, field) => {
 
   const numPrefix = await docRetrive(doc, prefix, '');
   const { maxlength = 10 } = options;
-  const suffixLength = length || maxlength - numPrefix.length;
+  const suffixLength = (length || maxlength) - numPrefix.length;
   const numStr = addLeadingZeros
     ? String(num).padStart(suffixLength, '0')
     : String(num);
