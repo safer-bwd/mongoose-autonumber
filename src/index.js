@@ -56,6 +56,7 @@ const setNumber = async (doc, field) => {
 
   if (type === Number) {
     set(doc, path, num);
+    return;
   }
 
   const {
