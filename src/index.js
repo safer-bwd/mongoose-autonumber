@@ -22,7 +22,7 @@ const getAutonumberFields = (schema) => {
 
 const docRetrive = async (doc, retriver, defaultValue = null) => {
   if (!retriver) {
-    return defaultVal;
+    return defaultValue;
   }
 
   let value;
