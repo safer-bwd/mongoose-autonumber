@@ -1,4 +1,4 @@
-export default (period, date) => {
+export default (date, period) => {
   const year = date.getFullYear();
   const month = date.getMonth();
   const day = date.getDate();

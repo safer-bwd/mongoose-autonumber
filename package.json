@@ -23,6 +23,14 @@
     "testEnvironment": "node",
     "verbose": true
   },
+  "peerDependencies": {
+    "mongoose": "^5.x"
+  },
+  "dependencies": {
+    "lodash.get": "^4.4.2",
+    "lodash.isplainobject": "^4.0.6",
+    "lodash.set": "^4.3.2"
+  },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
@@ -37,8 +45,5 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jest": "^22.5.1",
     "jest": "^24.5.0"
-  },
-  "peerDependencies": {
-    "mongoose": "^5.x"
   }
 }

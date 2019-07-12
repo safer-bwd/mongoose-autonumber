@@ -7,13 +7,13 @@ const schema = new mongoose.Schema({
     lowercase: true,
     trim: true
   },
-  period: {
-    type: Date,
+  group: {
+    type: mongoose.Schema.Types.Mixed,
     required: false,
     default: null
   },
-  group: {
-    type: mongoose.Schema.Types.Mixed,
+  period: {
+    type: Date,
     required: false,
     default: null
   },
@@ -26,11 +26,11 @@ const schema = new mongoose.Schema({
 
 schema.index({
   numerator: 1,
-  period: 1,
-  group: 1
+  group: 1,
+  period: 1
 });
 
-async function getNext(numerator, period, group) {
+async function getNext(numerator, group, period) {
   const Counter = this;
   const filter = { numerator, period, group };
   const update = { $inc: { count: 1 } };
@@ -43,4 +43,4 @@ async function getNext(numerator, period, group) {
 
 schema.statics.getNext = getNext;
 
-export default mongoose.model('__AutoNumberCounter', schema);
+export default mongoose.model('__Counter', schema);

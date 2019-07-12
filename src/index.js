@@ -1,51 +1,92 @@
+import get from 'lodash.get';
+import set from 'lodash.set';
+import isPlainObject from 'lodash.isplainobject';
 import Counter from './counter';
-import startOf from './utils/start-of';
+import startOfPeriod from './utils/start-of-period';
 import isFunction from './utils/is-function';
 
-export default (schema, options = {}) => {
+const getAutonumberFields = (schema) => {
+  const fields = [];
+
+  schema.eachPath((path, schematype) => {
+    const { options } = schematype;
+    const { autonumber, type } = options;
+    const isValidType = (type === Number || type === String);
+    if (autonumber && isValidType) {
+      fields.push({ path, options });
+    }
+  });
+
+  return fields;
+};
+
+const docRetrive = async (doc, retriver, defaultValue = null) => {
+  if (!retriver) {
+    return defaultVal;
+  }
+
+  let value;
+  if (isFunction(retriver)) {
+    value = await retriver(doc);
+  } else {
+    value = get(doc, retriver, defaultValue);
+  }
+
+  return value;
+};
+
+const setNumber = async (doc, field) => {
+  const { path, options } = field;
+  const { autonumber, type } = options;
+  const autonumberOptions = isPlainObject(autonumber) ? autonumber : {};
+
   const {
-    field = 'number',
-    fieldType = Number,
     numerator,
-    period,
     group,
-    prefix = '',
-    dateField
-  } = options;
+    period,
+    date = () => new Date()
+  } = autonumberOptions;
 
-  const pathType = schema.path(field);
-  const pathOptions = pathType ? pathType.options || {} : {};
-  const { type = fieldType } = pathOptions;
+  const { modelName } = doc.constructor;
+  const numNumerator = numerator || `${modelName}.${path}`;
+  const numGroup = await docRetrive(doc, group);
+  const numDate = await docRetrive(doc, date);
+  const numPeriod = period ? startOfPeriod(numDate, period) : null;
+  const num = await Counter.getNext(numNumerator, numGroup, numPeriod);
 
-  schema.add({ [field]: { type } });
+  if (type === Number) {
+    set(doc, path, num);
+  }
 
-  async function setNumber(next) {
+  const {
+    prefix = () => '',
+    addLeadingZeros = false,
+    length,
+  } = autonumberOptions;
+
+  const numPrefix = await docRetrive(doc, prefix, '');
+  const { maxlength = 10 } = options;
+  const suffixLength = length || maxlength - numPrefix.length;
+  const numStr = addLeadingZeros
+    ? String(num).padStart(suffixLength, '0')
+    : String(num);
+
+  set(doc, path, `${numPrefix}${numStr}`);
+};
+
+export default (schema) => {
+  const fields = getAutonumberFields(schema);
+
+  async function setNumbers(next) {
     const doc = this;
     if (!doc.isNew) {
       next();
       return;
     }
-
-    const { modelName } = doc.constructor;
-    const docNumerator = numerator || modelName;
-    const docDate = dateField ? doc[dateField] : new Date();
-    const docPeriod = period ? startOf(period, docDate) : null;
-    let docGroup = null;
-    if (group) {
-      docGroup = isFunction(group) ? group(doc) : doc[group];
-    }
-
-    const count = await Counter.getNext(docNumerator, docPeriod, docGroup);
-
-    if (type === Number) {
-      doc[field] = count;
-    } else {
-      const docPrefix = isFunction(prefix) ? prefix(doc) : prefix;
-      doc[field] = `${docPrefix}${count}`;
-    }
-
+    const promises = fields.map(field => setNumber(doc, field));
+    await Promise.all(promises);
     next();
   }
 
-  schema.pre('save', setNumber);
+  schema.pre('save', setNumbers);
 };
