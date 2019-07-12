@@ -1,5 +1,5 @@
 {
-  "name": "mongoose-autonumber",
+  "name": "@safer-bwd/mongoose-autonumber",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
