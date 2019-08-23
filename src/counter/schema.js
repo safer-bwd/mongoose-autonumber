@@ -43,4 +43,4 @@ async function getNext(numerator, group, period) {
 
 schema.statics.getNext = getNext;
 
-export default mongoose.model('__Counter', schema);
+export default schema;

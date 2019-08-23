@@ -1,9 +1,11 @@
 import get from 'lodash.get';
 import set from 'lodash.set';
 import isPlainObject from 'lodash.isplainobject';
-import Counter from './counter';
+import makeCounter from './counter/make';
 import startOfPeriod from './utils/start-of-period';
 import isFunction from './utils/is-function';
+
+let Counter;
 
 const getAutonumberFields = (schema) => {
   const fields = [];
@@ -75,7 +77,10 @@ const setNumber = async (doc, field) => {
   set(doc, path, `${numPrefix}${numStr}`);
 };
 
-export default (schema) => {
+export default (schema, options) => {
+  const { counterName } = options || {};
+  Counter = makeCounter(counterName);
+
   const fields = getAutonumberFields(schema);
 
   async function setNumbers(next) {
