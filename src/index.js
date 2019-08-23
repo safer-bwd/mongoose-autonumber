@@ -22,21 +22,6 @@ const getAutonumberFields = (schema) => {
   return fields;
 };
 
-const retriveFromDoc = async (doc, retriver, defaultValue = null) => {
-  if (!retriver) {
-    return defaultValue;
-  }
-
-  let value;
-  if (isFunction(retriver)) {
-    value = await retriver(doc);
-  } else {
-    value = get(doc, retriver, defaultValue);
-  }
-
-  return value;
-};
-
 const setNumber = async (doc, field) => {
   const { path, options } = field;
   const { autonumber, type } = options;
@@ -51,8 +36,8 @@ const setNumber = async (doc, field) => {
 
   const { modelName } = doc.constructor;
   const numNumerator = numerator || `${modelName}.${path}`;
-  const numGroup = await retriveFromDoc(doc, group);
-  const numDate = await retriveFromDoc(doc, date);
+  const numGroup = isFunction(group) ? group(doc) : get(doc, group, null);
+  const numDate = isFunction(date) ? date(doc) : get(doc, date, null);
   const numPeriod = period ? startOfPeriod(numDate, period) : null;
   const num = await Counter.getNext(numNumerator, numGroup, numPeriod);
 
@@ -67,7 +52,7 @@ const setNumber = async (doc, field) => {
     length,
   } = autonumberOptions;
 
-  const numPrefix = await retriveFromDoc(doc, prefix, '');
+  const numPrefix = isFunction(prefix) ? prefix(doc) : get(doc, prefix, '');
   const { maxlength = 10 } = options;
   const suffixLength = (length || maxlength) - numPrefix.length;
   const numStr = addLeadingZeros
