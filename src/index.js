@@ -63,7 +63,7 @@ const setNumber = async (doc, field) => {
 };
 
 export default (schema, options) => {
-  const { counterName } = options || {};
+  const { counterName = '__Counter' } = options || {};
   Counter = makeCounter(counterName);
 
   const fields = getAutonumberFields(schema);

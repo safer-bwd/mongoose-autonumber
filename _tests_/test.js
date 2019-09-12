@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const autoNumber = require('../src');
+import mongoose from 'mongoose';
+import autoNumberPlugin from '../src';
 
 beforeAll(async () => {
   await mongoose.connect(process.env.DB_MONGO_URI, {
@@ -30,7 +30,7 @@ it('should auto increment', async () => {
       autonumber: true
     }
   });
-  schema.plugin(autoNumber);
+  schema.plugin(autoNumberPlugin);
   const Order = mongoose.model('Order', schema);
 
   const order1 = new Order();
@@ -60,7 +60,7 @@ it('should increment inside group #1', async () => {
       }
     },
   });
-  schema.plugin(autoNumber);
+  schema.plugin(autoNumberPlugin);
   const Order = mongoose.model('Order', schema);
 
   const order1 = new Order({ customer: { name: 'customer1' } });
@@ -90,7 +90,7 @@ it('should increment inside group #2', async () => {
       }
     },
   });
-  schema.plugin(autoNumber);
+  schema.plugin(autoNumberPlugin);
   const Order = mongoose.model('Order', schema);
 
   const order1 = new Order({ customer: { name: 'customer1' } });
@@ -119,7 +119,7 @@ it('should increment inside period #1', async () => {
       }
     }
   });
-  schema.plugin(autoNumber);
+  schema.plugin(autoNumberPlugin);
   const Order = mongoose.model('Order', schema);
 
   const order1 = new Order({ period: new Date(2019, 0, 1) });
@@ -148,7 +148,7 @@ it('should increment inside period #2', async () => {
       }
     }
   });
-  schema.plugin(autoNumber);
+  schema.plugin(autoNumberPlugin);
   const Order = mongoose.model('Order', schema);
 
   const order1 = new Order({ period: new Date(2019, 0, 1) });
@@ -178,7 +178,7 @@ it('should add prefix #1', async () => {
       }
     }
   });
-  schema.plugin(autoNumber);
+  schema.plugin(autoNumberPlugin);
   const Order = mongoose.model('Order', schema);
 
   const order1 = new Order({ store: { prefix: 'S1-' } });
@@ -208,7 +208,7 @@ it('should add prefix #2', async () => {
       }
     }
   });
-  schema.plugin(autoNumber);
+  schema.plugin(autoNumberPlugin);
   const Order = mongoose.model('Order', schema);
 
   const order1 = new Order({ store: { name: 'store1' } });
@@ -233,7 +233,7 @@ it('should add leading zeros #1', async () => {
       }
     }
   });
-  schema.plugin(autoNumber);
+  schema.plugin(autoNumberPlugin);
   const Order = mongoose.model('Order', schema);
 
   const order1 = new Order();
@@ -263,7 +263,7 @@ it('should add leading zeros #2', async () => {
       }
     }
   });
-  schema.plugin(autoNumber);
+  schema.plugin(autoNumberPlugin);
   const Order = mongoose.model('Order', schema);
 
   const order1 = new Order({ prefix: 'AA' });
