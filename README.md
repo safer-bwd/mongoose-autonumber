@@ -29,11 +29,16 @@ The plugin adds an option `autonumber` for [String](https://mongoosejs.com/docs/
 
 ## Usage
 
+### Auto increment
+
 ```javascript
 import autoNumberPlugin from '@safer-bwd/mongoose-autonumber';
   
 const schema = new mongoose.Schema({
-  number: { type: Number, autonumber: true }
+  number: {
+    type: Number,
+    autonumber: true 
+  }
 });
 schema.plugin(autoNumberPlugin);
 const Order = mongoose.model('Order', schema);
@@ -42,4 +47,82 @@ const order1 = new Order();
 await order1.save(); // number => 1
 const order2 = new Order();
 await order2.save(); // number => 2
+```
+
+### Increment inside group
+
+```javascript
+import autoNumberPlugin from '@safer-bwd/mongoose-autonumber';
+  
+const schema = new mongoose.Schema({
+  customer: String,
+  number: {
+    type: Number,
+    autonumber: {
+      group: doc => doc.customer 
+    }
+  }
+});
+schema.plugin(autoNumberPlugin);
+const Order = mongoose.model('Order', schema);
+
+const order1 = new Order({ customer: 'A' });
+await order1.save(); // number => 1
+const order2 = new Order({ customer: 'A' });
+await order2.save(); // number => 2
+const order3 = new Order({ customer: 'B' });
+await order3.save(); // number => 1
+```
+
+### Increment inside period
+
+```javascript
+import autoNumberPlugin from '@safer-bwd/mongoose-autonumber';
+  
+const schema = new mongoose.Schema({
+  period: Date,
+  number: {
+    type: Number,
+    autonumber: {
+        period: 'year',
+        date: doc => doc.period
+    }
+  }
+});
+schema.plugin(autoNumberPlugin);
+const Order = mongoose.model('Order', schema);
+
+const order1 = new Order({ period: new Date(2019, 0, 1) });
+await order1.save(); // number => 1
+const order2 = new Order({ period: new Date(2019, 0, 2) });
+await order2.save(); // number => 2
+const order3 = new Order({ period: new Date(2020, 0, 1) });
+await order3.save(); // number => 1
+```
+
+### Prefix and adding leading zeros
+
+```javascript
+import autoNumberPlugin from '@safer-bwd/mongoose-autonumber';
+  
+const schema = new mongoose.Schema({
+  customer: String,
+  number: {
+    type: String,
+    autonumber: {
+      prefix: doc => `${doc.customer}-`,
+      addLeadingZeros: true,
+      length: 6
+    }
+  }
+});
+schema.plugin(autoNumberPlugin);
+const Order = mongoose.model('Order', schema);
+
+const order1 = new Order({ customer: 'A' });
+await order1.save(); // number => 'A-0001'
+const order2 = new Order({ customer: 'A' });
+await order2.save(); // number => 'A-0002'
+const order3 = new Order({ customer: 'B' });
+await order3.save(); // number => 'B-0003'
 ```
