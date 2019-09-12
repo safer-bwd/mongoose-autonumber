@@ -124,7 +124,7 @@ it('should increment inside period #1', async () => {
 
   const order1 = new Order({ period: new Date(2019, 0, 1) });
   await order1.save();
-  const order2 = new Order({ period: new Date(2019, 0, 1) });
+  const order2 = new Order({ period: new Date(2019, 0, 2) });
   await order2.save();
   const order3 = new Order({ period: new Date(2020, 0, 1) });
   await order3.save();
@@ -153,7 +153,7 @@ it('should increment inside period #2', async () => {
 
   const order1 = new Order({ period: new Date(2019, 0, 1) });
   await order1.save();
-  const order2 = new Order({ period: new Date(2019, 0, 1) });
+  const order2 = new Order({ period: new Date(2019, 1, 1) });
   await order2.save();
   const order3 = new Order({ period: new Date(2020, 0, 1) });
   await order3.save();
