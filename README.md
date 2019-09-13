@@ -12,13 +12,13 @@ npm install @safer-bwd/mongoose-autonumber --save
 
 ## Options
 
--   `counterName` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** The Mongoose model name for storing counters (optional, default `__Counter`)
+-   `counterName` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** The Mongoose model name for storing counters (optional, default `__Counter`)
 
 ## Settings
 
 The plugin adds an option `autonumber` for [String](https://mongoosejs.com/docs/schematypes.html#strings) or [Number](https://mongoosejs.com/docs/schematypes.html#numbers) schema types.
 
--   `autonumber` **([Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) \| [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object))**  (optional, default `false`)
+-   `autonumber` **([boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) \| [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object))**  (optional, default `false`)
     -   `autonumber.numerator` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** The counter name (optional)
     -   `autonumber.group` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function))** The path to a Mongoose document grouping property or function to calculate the group (optional)
     -   `autonumber.period` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** The periodicity of numbering. Used only with *autonumber.date* (optional, available values `year`, `month`, `day`, `hour`, `minute`)
