@@ -29,6 +29,12 @@ The plugin adds an option `autonumber` for [String](https://mongoosejs.com/docs/
 
 ## Usage
 
+The number is set automatically when a new document is saved.
+
+**Important:**
+By default, the plugin does not make auto number fields immutable. 
+But you can use schema type option [`immutable`](https://mongoosejs.com/docs/api/schematype.html#schematype_SchemaType-immutable).
+
 ### Auto increment
 
 ```javascript
@@ -37,7 +43,8 @@ import autoNumberPlugin from '@safer-bwd/mongoose-autonumber';
 const schema = new mongoose.Schema({
   number: {
     type: Number,
-    autonumber: true 
+    autonumber: true,
+    immutable: true
   }
 });
 schema.plugin(autoNumberPlugin);

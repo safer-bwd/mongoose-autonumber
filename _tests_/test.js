@@ -28,7 +28,8 @@ it('should auto increment', async () => {
   const schema = new mongoose.Schema({
     number: {
       type: Number,
-      autonumber: true
+      autonumber: true,
+      immutable: true
     }
   });
   schema.plugin(autoNumberPlugin);
