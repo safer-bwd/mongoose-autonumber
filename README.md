@@ -24,8 +24,7 @@ The plugin adds an option `autonumber` for [String](https://mongoosejs.com/docs/
     -   `autonumber.period` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** The periodicity of numbering. Used only with *autonumber.date* (optional, available values `year`, `month`, `day`, `hour`, `minute`)
     -   `autonumber.date` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function))** The path to a Mongoose document date property or function to calculate the date. Used only with *autonumber.period* (optional)
     -   `autonumber.prefix` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function))** The path to a Mongoose document prefix property or function to calculate the prefix. Used only with [String](https://mongoosejs.com/docs/schematypes.html#strings) schema type (optional)
-    -   `autonumber.addLeadingZeros` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** The flag, If true then leading zeros are added. Used only with [String](https://mongoosejs.com/docs/schematypes.html#strings) schema type (optional)
-    -   `autonumber.length` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** The number length. Used only with [String](https://mongoosejs.com/docs/schematypes.html#strings) schema type and *autonumber.addLeadingZeros* (optional, default `10`)
+    -   `autonumber.addLeadingZeros` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** The flag, If true then leading zeros are added. Used only with [String](https://mongoosejs.com/docs/schematypes.html#strings) schema type and `maxlength` schema type option (optional)
 
 ## Usage
 
@@ -109,6 +108,9 @@ await order3.save(); // number => 1
 
 ### Prefix and adding leading zeros
 
+In this case `maxlength` = the total number length (prefix + suffix).
+If the schema type option `maxlength` is not set then leading zeros will not be added.
+
 ```javascript
 import autoNumberPlugin from '@safer-bwd/mongoose-autonumber';
   
@@ -116,10 +118,10 @@ const schema = new mongoose.Schema({
   customer: String,
   number: {
     type: String,
+    maxlength: 6,
     autonumber: {
       prefix: doc => `${doc.customer}-`,
-      addLeadingZeros: true,
-      length: 6
+      addLeadingZeros: true
     }
   }
 });

@@ -228,9 +228,9 @@ it('should add leading zeros #1', async () => {
   const schema = new mongoose.Schema({
     number: {
       type: String,
+      maxlength: 5,
       autonumber: {
-        addLeadingZeros: true,
-        length: 5
+        addLeadingZeros: true
       }
     }
   });
@@ -257,10 +257,10 @@ it('should add leading zeros #2', async () => {
     },
     number: {
       type: String,
+      maxlength: 6,
       autonumber: {
         prefix: doc => `${doc.prefix}-`,
-        addLeadingZeros: true,
-        length: 6
+        addLeadingZeros: true
       }
     }
   });

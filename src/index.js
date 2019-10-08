@@ -46,20 +46,18 @@ const setNumber = async (doc, field) => {
     return;
   }
 
+  const { maxlength } = options;
   const {
     prefix = () => '',
-    addLeadingZeros = false,
-    length,
+    addLeadingZeros = false
   } = autonumberOptions;
 
   const numPrefix = isFunction(prefix) ? prefix(doc) : get(doc, prefix, '');
-  const { maxlength = 10 } = options;
-  const suffixLength = (length || maxlength) - numPrefix.length;
-  const numStr = addLeadingZeros
-    ? String(num).padStart(suffixLength, '0')
+  const numSuffix = (addLeadingZeros && maxlength)
+    ? String(num).padStart(maxlength - numPrefix.length, '0')
     : String(num);
 
-  set(doc, path, `${numPrefix}${numStr}`);
+  set(doc, path, `${numPrefix}${numSuffix}`);
 };
 
 export default (schema, options) => {
