@@ -42,8 +42,8 @@ import autoNumberPlugin from '@safer-bwd/mongoose-autonumber';
 const schema = new mongoose.Schema({
   number: {
     type: Number,
+    immutable: true,
     autonumber: true,
-    immutable: true
   }
 });
 schema.plugin(autoNumberPlugin);
@@ -62,6 +62,7 @@ import autoNumberPlugin from '@safer-bwd/mongoose-autonumber';
   
 const schema = new mongoose.Schema({
   customer: String,
+  immutable: true,
   number: {
     type: Number,
     autonumber: {
@@ -89,6 +90,7 @@ const schema = new mongoose.Schema({
   period: Date,
   number: {
     type: Number,
+    immutable: true,
     autonumber: {
         period: 'year',
         date: doc => doc.period
@@ -118,6 +120,7 @@ const schema = new mongoose.Schema({
   customer: String,
   number: {
     type: String,
+    immutable: true,
     maxlength: 6,
     autonumber: {
       prefix: doc => `${doc.customer}-`,

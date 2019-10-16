@@ -12,6 +12,7 @@ beforeAll(async () => {
     useFindAndModify: false,
     useUnifiedTopology: true
   });
+  await mongoose.connection.dropDatabase();
 });
 
 afterAll(async () => {
@@ -20,7 +21,8 @@ afterAll(async () => {
 
 afterEach(async () => {
   delete mongoose.models.Order;
-  await mongoose.connection.dropDatabase();
+  // TODO
+  // await mongoose.connection.dropDatabase();
 });
 
 it('should auto increment', async () => {
@@ -50,6 +52,7 @@ it('should increment inside group #1', async () => {
   const schema = new mongoose.Schema({
     number: {
       type: Number,
+      immutable: true,
       autonumber: {
         group: 'customer.name'
       }
@@ -80,6 +83,7 @@ it('should increment inside group #2', async () => {
   const schema = new mongoose.Schema({
     number: {
       type: Number,
+      immutable: true,
       autonumber: {
         group: doc => doc.customer.name
       }
@@ -114,6 +118,7 @@ it('should increment inside period #1', async () => {
     },
     number: {
       type: Number,
+      immutable: true,
       autonumber: {
         period: 'year',
         date: 'period'
@@ -143,6 +148,7 @@ it('should increment inside period #2', async () => {
     },
     number: {
       type: Number,
+      immutable: true,
       autonumber: {
         period: 'year',
         date: doc => doc.period
@@ -168,6 +174,7 @@ it('should add prefix #1', async () => {
   const schema = new mongoose.Schema({
     number: {
       type: String,
+      immutable: true,
       autonumber: {
         prefix: 'store.prefix'
       }
@@ -198,6 +205,7 @@ it('should add prefix #2', async () => {
   const schema = new mongoose.Schema({
     number: {
       type: String,
+      immutable: true,
       autonumber: {
         prefix: doc => `${doc.store.name}-`
       }
@@ -228,6 +236,7 @@ it('should add leading zeros #1', async () => {
   const schema = new mongoose.Schema({
     number: {
       type: String,
+      immutable: true,
       maxlength: 5,
       autonumber: {
         addLeadingZeros: true
@@ -257,6 +266,7 @@ it('should add leading zeros #2', async () => {
     },
     number: {
       type: String,
+      immutable: true,
       maxlength: 6,
       autonumber: {
         prefix: doc => `${doc.prefix}-`,
