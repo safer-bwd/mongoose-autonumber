@@ -21,8 +21,7 @@ afterAll(async () => {
 
 afterEach(async () => {
   delete mongoose.models.Order;
-  // TODO
-  // await mongoose.connection.dropDatabase();
+  await mongoose.connection.dropDatabase();
 });
 
 it('should auto increment', async () => {
