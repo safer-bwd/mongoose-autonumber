@@ -1,6 +1,6 @@
 {
   "name": "@safer-bwd/mongoose-autonumber",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A Mongoose plugin for auto-increment or auto-number",
   "main": "dist/index.js",
   "repository": {

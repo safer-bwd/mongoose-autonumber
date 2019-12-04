@@ -61,10 +61,14 @@ const setNumber = async (doc, field) => {
 };
 
 export default (schema, options) => {
+  const fields = getAutonumberFields(schema);
+  if (fields.length === 0) {
+    return;
+  }
+
   const { counterName = '__Counter' } = options || {};
   Counter = makeCounter(counterName);
-
-  const fields = getAutonumberFields(schema);
+  schema.static('getCounterModel', () => Counter);
 
   async function setNumbers(next) {
     const doc = this;
